@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
-
     [ApiController]
     [Route("api/users")]
     public class UserController : ControllerBase
@@ -29,7 +28,13 @@ namespace App.Controllers
         [HttpGet("{id}")]
         public ActionResult<User> Show(int id)
         {
-            return this.Service.GetById(id);
+            var user = this.Service.GetById(id);
+            if (user != null)
+            {
+                return user;
+            }
+
+            return NotFound();
         }
 
         [HttpPost]
@@ -41,9 +46,9 @@ namespace App.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update(int id, User data)
+        public ActionResult Update(int id, User user)
         {
-            this.Service.Update(id, data);
+            this.Service.Update(id, user);
 
             return NoContent();
         }
